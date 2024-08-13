@@ -1,0 +1,8 @@
+
+project(lua_test)
+set(CMAKE_CXX_STANDARD 23)
+
+add_executable(lua_test "main.cpp")
+
+target_link_libraries(lua_test PUBLIC lua)
+target_link_libraries(lua_test PUBLIC sol2)
