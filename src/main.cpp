@@ -405,36 +405,33 @@ void CreateGLMBindings( sol::state& lua )
 
 int main( int, char* [] )
 {
-    sol::state lua;
-    lua.open_libraries( sol::lib::base, sol::lib::io );
+	sol::state lua;
+	lua.open_libraries( sol::lib::base, sol::lib::io );
 	
 	bubble::CreateGLMBindings( lua );
 
 	try
 	{
-        lua.safe_script( R"(
+	    lua.safe_script( R"(
 			test_vec = vec2(1,1)
-			io.write( test_vec[0] , "\n" )
-
+			io.write( test_vec[0] , "\n" 
 			test_mat2 = identity_mat2()
 			io.write( tostring( test_mat2 ), "\n" )
 			test_mat2[1][1] = 3
-			io.write( tostring( test_mat2 ) , "\n\n" )
-
+			io.write( tostring( test_mat2 ) , "\n\n" 
 			test_mat3 = identity_mat3()
 			io.write( tostring( test_mat3 ), "\n" )
 			test_mat3[1][1] = 3
-			io.write( tostring( test_mat3 ) , "\n\n" )
-
+			io.write( tostring( test_mat3 ) , "\n\n" 
 			test_mat4 = identity_mat4()
 			io.write( tostring( test_mat4 ), "\n" )
 			test_mat4[1][1] = 3
 			io.write( tostring( test_mat4 ) , "\n" )
 		)" );
 	}
-    catch ( std::exception& e )
+	catch ( std::exception& e )
 	{
 		std::print( "{}", e.what() );
 	}
-    return 0;
+	return 0;
 }
