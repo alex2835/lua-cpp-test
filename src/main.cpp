@@ -8,7 +8,6 @@
 
 namespace bubble
 {
-// glm::vec2
 void CreateVec2Bind( sol::state& lua )
 {
 	auto vec2_multiply_overloads = sol::overload( []( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 * v2; },
@@ -27,7 +26,6 @@ void CreateVec2Bind( sol::state& lua )
 													 []( const glm::vec2& v1, float value ) { return v1 - value; },
 													 []( float value, const glm::vec2& v1 ) { return v1 - value; } );
 
-	// create vec2 usertype
 	lua.new_usertype<glm::vec2>(
 		"vec2",
 		sol::call_constructor,
@@ -57,7 +55,7 @@ void CreateVec2Bind( sol::state& lua )
 	);
 }
 
-// glm::vec3
+
 void CreateVec3Bind( sol::state& lua )
 {
 	auto vec3_multiply_overloads = sol::overload( []( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 * v2; },
@@ -107,7 +105,7 @@ void CreateVec3Bind( sol::state& lua )
 	);
 }
 
-// glm::vec4
+
 void CreateVec4Bind( sol::state& lua )
 {
 	auto vec4_multiply_overloads = sol::overload( []( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 * v2; },
@@ -280,32 +278,55 @@ void MathFreeFunctions( sol::state& lua )
 	lua.set_function( "identity_mat4", glm::identity<glm::mat4> );
 
 	lua.set_function( "distance",
-					  sol::overload( []( glm::vec2& a, glm::vec2& b ) { return glm::distance( a, b ); },
-									 []( glm::vec3& a, glm::vec3& b ) { return glm::distance( a, b ); },
-									 []( glm::vec4& a, glm::vec4& b ) { return glm::distance( a, b ); } ) );
+		sol::overload( 
+			[]( glm::vec2& a, glm::vec2& b ) { return glm::distance( a, b ); },
+			[]( glm::vec3& a, glm::vec3& b ) { return glm::distance( a, b ); },
+			[]( glm::vec4& a, glm::vec4& b ) { return glm::distance( a, b ); }
+		) 
+	);
 
-	lua.set_function( "lerp", []( float a, float b, float t ) { return std::lerp( a, b, t ); } );
-	lua.set_function(
-		"clamp",
-		sol::overload( []( float value, float min, float max ) { return std::clamp( value, min, max ); },
-					   []( double value, double min, double max ) { return std::clamp( value, min, max ); },
-					   []( int value, int min, int max ) { return std::clamp( value, min, max ); } ) );
+	lua.set_function( "lerp", []( float a, float b, float f ) { return std::lerp( a, b, f ); } );
+	
+	lua.set_function( "clamp",
+		sol::overload( 
+			[]( float value, float min, float max ) { return std::clamp( value, min, max ); },
+			[]( double value, double min, double max ) { return std::clamp( value, min, max ); },
+			[]( int value, int min, int max ) { return std::clamp( value, min, max ); }
+		)
+	);
 
 	lua.set_function( "distance",
-					  sol::overload( []( glm::vec2& a, glm::vec2& b ) { return glm::distance( a, b ); },
-									 []( glm::vec3& a, glm::vec3& b ) { return glm::distance( a, b ); },
-									 []( glm::vec4& a, glm::vec4& b ) { return glm::distance( a, b ); } ) );
+		sol::overload( 
+			[]( glm::vec2& a, glm::vec2& b ) { return glm::distance( a, b ); },
+			[]( glm::vec3& a, glm::vec3& b ) { return glm::distance( a, b ); },
+			[]( glm::vec4& a, glm::vec4& b ) { return glm::distance( a, b ); }
+		)
+	);
 
-	lua.set_function( "nearly_zero",
-					  sol::overload(
-						  []( const glm::vec2& v ) {
-		return glm::epsilonEqual( v.x, 0.f, 0.001f ) && glm::epsilonEqual( v.y, 0.f, 0.001f );
-	},
-						  []( const glm::vec3& v ) {
-		return glm::epsilonEqual( v.x, 0.f, 0.001f ) && glm::epsilonEqual( v.y, 0.f, 0.001f ) &&
-			glm::epsilonEqual( v.z, 0.f, 0.001f );
-	} ) );
+	lua.set_function( "nearly_zero", 
+		sol::overload(
+			[]( const glm::vec2& v )
+			{
+				return glm::epsilonEqual( v.x, 0.f, 0.001f ) and
+					   glm::epsilonEqual( v.y, 0.f, 0.001f );
+			},
+			[]( const glm::vec3& v )
+			{
+				return glm::epsilonEqual( v.x, 0.f, 0.001f ) and
+					   glm::epsilonEqual( v.y, 0.f, 0.001f ) and
+					   glm::epsilonEqual( v.z, 0.f, 0.001f );
+			},
+			[]( const glm::vec4& v )
+			{
+				return glm::epsilonEqual( v.x, 0.f, 0.001f ) and
+					   glm::epsilonEqual( v.y, 0.f, 0.001f ) and
+					   glm::epsilonEqual( v.z, 0.f, 0.001f ) and
+					   glm::epsilonEqual( v.w, 0.f, 0.001f );
+			}
+		)
+	);
 }
+
 
 void CreateGLMBindings( sol::state& lua )
 {
@@ -321,10 +342,12 @@ void CreateGLMBindings( sol::state& lua )
 
 
 
+
 int main( int, char* [] )
 {
     sol::state lua;
     lua.open_libraries( sol::lib::base, sol::lib::io );
+	
 	bubble::CreateGLMBindings( lua );
 
 	try
@@ -339,6 +362,5 @@ int main( int, char* [] )
 	{
 		std::print( "{}", e.what() );
 	}
-
     return 0;
 }
