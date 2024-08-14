@@ -7,3 +7,10 @@ add_executable(lua_test "main.cpp")
 target_link_libraries(lua_test PUBLIC lua)
 target_link_libraries(lua_test PUBLIC sol2)
 target_link_libraries(lua_test PUBLIC glm)
+
+
+if(MSVC)
+	target_compile_options(lua_test PUBLIC
+	 /WX /ZI /bigobj
+	)
+endif()

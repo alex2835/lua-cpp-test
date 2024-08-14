@@ -2,29 +2,38 @@
 #include <sol/sol.hpp>
 #include <print>
 
-#include <glm/glm.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
 
 namespace bubble
 {
 void CreateVec2Bind( sol::state& lua )
 {
-	auto vec2_multiply_overloads = sol::overload( []( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 * v2; },
-												  []( const glm::vec2& v1, float value ) { return v1 * value; },
-												  []( float value, const glm::vec2& v1 ) { return v1 * value; } );
+	auto vec2_multiply_overloads = 
+		sol::overload( 
+			[]( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 * v2; },
+			[]( const glm::vec2& v1, float value ) { return v1 * value; },
+			[]( float value, const glm::vec2& v1 ) { return v1 * value; }
+		);
 
-	auto vec2_divide_overloads = sol::overload( []( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 / v2; },
-												[]( const glm::vec2& v1, float value ) { return v1 / value; },
-												[]( float value, const glm::vec2& v1 ) { return v1 / value; } );
+	auto vec2_divide_overloads = 
+		sol::overload( []( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 / v2; },
+					   []( const glm::vec2& v1, float value ) { return v1 / value; },
+					   []( float value, const glm::vec2& v1 ) { return v1 / value; }
+		);
 
-	auto vec2_addition_overloads = sol::overload( []( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 + v2; },
-												  []( const glm::vec2& v1, float value ) { return v1 + value; },
-												  []( float value, const glm::vec2& v1 ) { return v1 + value; } );
+	auto vec2_addition_overloads = 
+		sol::overload( []( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 + v2; },
+					   []( const glm::vec2& v1, float value ) { return v1 + value; },
+					   []( float value, const glm::vec2& v1 ) { return v1 + value; }
+		);
 
-	auto vec2_subtraction_overloads = sol::overload( []( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 - v2; },
-													 []( const glm::vec2& v1, float value ) { return v1 - value; },
-													 []( float value, const glm::vec2& v1 ) { return v1 - value; } );
+	auto vec2_subtraction_overloads = 
+		sol::overload( []( const glm::vec2& v1, const glm::vec2& v2 ) { return v1 - v2; },
+					   []( const glm::vec2& v1, float value ) { return v1 - value; },
+					   []( float value, const glm::vec2& v1 ) { return v1 - value; }
+		);
 
 	lua.new_usertype<glm::vec2>(
 		"vec2",
@@ -42,6 +51,10 @@ void CreateVec2Bind( sol::state& lua )
 		vec2_addition_overloads,
 		sol::meta_function::subtraction,
 		vec2_subtraction_overloads,
+        sol::meta_function::index,
+        []( const glm::vec2& v, int i ) { return v[i]; },
+        sol::meta_function::new_index,
+        []( glm::vec2& v, int i, float value ) { v[i] = value; },
         sol::meta_function::to_string,
         []( const glm::vec2& v ) { return std::format( "[{}, {}]", v.x, v.y ); },
 		"length",
@@ -58,21 +71,33 @@ void CreateVec2Bind( sol::state& lua )
 
 void CreateVec3Bind( sol::state& lua )
 {
-	auto vec3_multiply_overloads = sol::overload( []( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 * v2; },
-												  []( const glm::vec3& v1, float value ) { return v1 * value; },
-												  []( float value, const glm::vec3& v1 ) { return v1 * value; } );
+	auto vec3_multiply_overloads = 
+		sol::overload( 
+			[]( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 * v2; },
+			[]( const glm::vec3& v1, float value ) { return v1 * value; },
+			[]( float value, const glm::vec3& v1 ) { return v1 * value; }
+		);
 
-	auto vec3_divide_overloads = sol::overload( []( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 / v2; },
-												[]( const glm::vec3& v1, float value ) { return v1 / value; },
-												[]( float value, const glm::vec3& v1 ) { return v1 / value; } );
+	auto vec3_divide_overloads = 
+		sol::overload( 
+			[]( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 / v2; },
+			[]( const glm::vec3& v1, float value ) { return v1 / value; },
+			[]( float value, const glm::vec3& v1 ) { return v1 / value; } 
+		);
 
-	auto vec3_addition_overloads = sol::overload( []( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 + v2; },
-												  []( const glm::vec3& v1, float value ) { return v1 + value; },
-												  []( float value, const glm::vec3& v1 ) { return v1 + value; } );
+	auto vec3_addition_overloads = 
+		sol::overload( 
+			[]( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 + v2; },
+			[]( const glm::vec3& v1, float value ) { return v1 + value; },
+			[]( float value, const glm::vec3& v1 ) { return v1 + value; }
+		);
 
-	auto vec3_subtraction_overloads = sol::overload( []( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 - v2; },
-													 []( const glm::vec3& v1, float value ) { return v1 - value; },
-													 []( float value, const glm::vec3& v1 ) { return v1 - value; } );
+	auto vec3_subtraction_overloads = 
+		sol::overload( 
+			[]( const glm::vec3& v1, const glm::vec3& v2 ) { return v1 - v2; },
+			[]( const glm::vec3& v1, float value ) { return v1 - value; },
+			[]( float value, const glm::vec3& v1 ) { return v1 - value; }
+		);
 
 	lua.new_usertype<glm::vec3>(
 		"vec3",
@@ -92,6 +117,10 @@ void CreateVec3Bind( sol::state& lua )
 		vec3_addition_overloads,
 		sol::meta_function::subtraction,
 		vec3_subtraction_overloads,
+        sol::meta_function::index,
+        []( const glm::vec3& v, int i ) { return v[i]; },
+        sol::meta_function::new_index,
+        []( glm::vec3& v, int i, float value ) { v[i] = value; },
 		sol::meta_function::to_string,
 		[]( const glm::vec3& v ) { return std::format("[{}, {}, {}]", v.x, v.y, v.z ); },
 		"length",
@@ -108,21 +137,33 @@ void CreateVec3Bind( sol::state& lua )
 
 void CreateVec4Bind( sol::state& lua )
 {
-	auto vec4_multiply_overloads = sol::overload( []( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 * v2; },
-												  []( const glm::vec4& v1, float value ) { return v1 * value; },
-												  []( float value, const glm::vec4& v1 ) { return v1 * value; } );
+	auto vec4_multiply_overloads = 
+		sol::overload( 
+			[]( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 * v2; },
+			[]( const glm::vec4& v1, float value ) { return v1 * value; },
+			[]( float value, const glm::vec4& v1 ) { return v1 * value; } 
+		);
 
-	auto vec4_divide_overloads = sol::overload( []( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 / v2; },
-												[]( const glm::vec4& v1, float value ) { return v1 / value; },
-												[]( float value, const glm::vec4& v1 ) { return v1 / value; } );
+	auto vec4_divide_overloads = 
+		sol::overload( 
+			[]( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 / v2; },
+			[]( const glm::vec4& v1, float value ) { return v1 / value; },
+			[]( float value, const glm::vec4& v1 ) { return v1 / value; } 
+		);
 
-	auto vec4_addition_overloads = sol::overload( []( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 + v2; },
-												  []( const glm::vec4& v1, float value ) { return v1 + value; },
-												  []( float value, const glm::vec4& v1 ) { return v1 + value; } );
+	auto vec4_addition_overloads = 
+		sol::overload( 
+			[]( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 + v2; },
+			[]( const glm::vec4& v1, float value ) { return v1 + value; },
+			[]( float value, const glm::vec4& v1 ) { return v1 + value; } 
+		);
 
-	auto vec4_subtraction_overloads = sol::overload( []( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 - v2; },
-													 []( const glm::vec4& v1, float value ) { return v1 - value; },
-													 []( float value, const glm::vec4& v1 ) { return v1 - value; } );
+	auto vec4_subtraction_overloads = 
+		sol::overload( 
+			[]( const glm::vec4& v1, const glm::vec4& v2 ) { return v1 - v2; },
+			[]( const glm::vec4& v1, float value ) { return v1 - value; },
+			[]( float value, const glm::vec4& v1 ) { return v1 - value; } 
+		);
 
 	lua.new_usertype<glm::vec4>(
 		"vec4",
@@ -144,6 +185,10 @@ void CreateVec4Bind( sol::state& lua )
 		vec4_addition_overloads,
 		sol::meta_function::subtraction,
 		vec4_subtraction_overloads,
+        sol::meta_function::index,
+        []( const glm::vec4& v, int i ) { return v[i]; },
+        sol::meta_function::new_index,
+        []( glm::vec4& v, int i, float value ) { v[i] = value; },
         sol::meta_function::to_string,
         []( const glm::vec4& v ) { return std::format( "[{}, {}, {}, {}]", v.x, v.y, v.z, v.w ); },
 		"length",
@@ -160,14 +205,17 @@ void CreateVec4Bind( sol::state& lua )
 // glm::mat2
 void CreateMat2Bind( sol::state& lua )
 {
-    auto mat2_multiply_overloads = sol::overload( []( const glm::mat2& m1, const glm::mat2& m2 ) { return m1 * m2; },
-												  []( const glm::mat2& m, const glm::vec2& v ) { return m * v; },
-                                                  []( const glm::mat2& m, float value ) { return m * value; },
-                                                  []( float value, const glm::mat2& m ) { return m * value; } );
+    auto mat2_multiply_overloads = 
+		sol::overload( 
+			[]( const glm::mat2& m1, const glm::mat2& m2 ) { return m1 * m2; },
+			[]( const glm::mat2& m, const glm::vec2& v ) { return m * v; },
+			[]( const glm::mat2& m, float value ) { return m * value; },
+			[]( float value, const glm::mat2& m ) { return m * value; } 
+		);
 
-    auto mat2_addition_overloads = sol::overload( []( const glm::mat2& m1, const glm::mat2& m2 ) { return m1 + m2; } );
+    auto mat2_addition_overloads = []( const glm::mat2& m1, const glm::mat2& m2 ) { return m1 + m2; };
 
-	auto mat2_subtraction_overloads = sol::overload( []( const glm::mat2& m1, const glm::mat2& m2 ) { return m1 - m2; } );
+	auto mat2_subtraction_overloads = []( const glm::mat2& m1, const glm::mat2& m2 ) { return m1 - m2; };
 
 	auto mat2_to_string = []( const glm::mat2& m )
 	{
@@ -177,17 +225,19 @@ void CreateMat2Bind( sol::state& lua )
                             m[1][0], m[1][1] );
 	};
 
-    lua.new_usertype<glm::mat2>(
-        "mat2",
-        sol::call_constructor,
-        sol::constructors<glm::mat2()>(),
-        sol::meta_function::multiplication,
-        mat2_multiply_overloads,
-        sol::meta_function::addition,
-        mat2_addition_overloads,
-        sol::meta_function::subtraction,
-        mat2_subtraction_overloads,
-        sol::meta_function::to_string,
+	lua.new_usertype<glm::mat2>(
+		"mat2",
+		sol::call_constructor,
+		sol::constructors<glm::mat2()>(),
+		sol::meta_function::multiplication,
+		mat2_multiply_overloads,
+		sol::meta_function::addition,
+		mat2_addition_overloads,
+		sol::meta_function::subtraction,
+		mat2_subtraction_overloads,
+		sol::meta_function::index,
+		[]( glm::mat2& m, int i ) -> glm::vec2& { return m[i]; },
+		sol::meta_function::to_string,
 		mat2_to_string
 	);
 }
@@ -195,14 +245,17 @@ void CreateMat2Bind( sol::state& lua )
 // glm::mat3
 void CreateMat3Bind( sol::state& lua )
 {
-    auto mat3_multiply_overloads = sol::overload( []( const glm::mat3& m1, const glm::mat3& m2 ) { return m1 * m2; },
-                                                  []( const glm::mat3& m, const glm::vec3& v ) { return m * v; },
-                                                  []( const glm::mat3& m, float value ) { return m * value; },
-                                                  []( float value, const glm::mat3& m ) { return m * value; } );
+    auto mat3_multiply_overloads = 
+		sol::overload( 
+			[]( const glm::mat3& m1, const glm::mat3& m2 ) { return m1 * m2; },
+			[]( const glm::mat3& m, const glm::vec3& v ) { return m * v; },
+			[]( const glm::mat3& m, float value ) { return m * value; },
+			[]( float value, const glm::mat3& m ) { return m * value; } 
+		);
 
-    auto mat3_addition_overloads = sol::overload( []( const glm::mat3& m1, const glm::mat3& m2 ) { return m1 + m2; } );
+    auto mat3_addition_overloads = []( const glm::mat3& m1, const glm::mat3& m2 ) { return m1 + m2; };
 
-    auto mat3_subtraction_overloads = sol::overload( []( const glm::mat3& m1, const glm::mat3& m2 ) { return m1 - m2; } );
+    auto mat3_subtraction_overloads = []( const glm::mat3& m1, const glm::mat3& m2 ) { return m1 - m2; };
 
 	auto mat3_to_string = []( const glm::mat3& m )
 	{
@@ -224,6 +277,8 @@ void CreateMat3Bind( sol::state& lua )
         mat3_addition_overloads,
         sol::meta_function::subtraction,
         mat3_subtraction_overloads,
+        sol::meta_function::index,
+        []( glm::mat3& m, int i ) -> glm::vec3& { return m[i]; },
         sol::meta_function::to_string,
 		mat3_to_string
     );
@@ -232,14 +287,17 @@ void CreateMat3Bind( sol::state& lua )
 // glm::mat4
 void CreateMat4Bind( sol::state& lua )
 {
-    auto mat4_multiply_overloads = sol::overload( []( const glm::mat4& m1, const glm::mat4& m2 ) { return m1 * m2; },
-                                                  []( const glm::mat4& m, const glm::vec4& v ) { return m * v; },
-                                                  []( const glm::mat4& m, float value ) { return m * value; },
-                                                  []( float value, const glm::mat4& m ) { return m * value; } );
+    auto mat4_multiply_overloads = 
+		sol::overload( 
+			[]( const glm::mat4& m1, const glm::mat4& m2 ) { return m1 * m2; },
+			[]( const glm::mat4& m, const glm::vec4& v ) { return m * v; },
+			[]( const glm::mat4& m, float value ) { return m * value; },
+			[]( float value, const glm::mat4& m ) { return m * value; } 
+		);
 
-    auto mat4_addition_overloads = sol::overload( []( const glm::mat4& m1, const glm::mat4& m2 ) { return m1 + m2; } );
+    auto mat4_addition_overloads = []( const glm::mat4& m1, const glm::mat4& m2 ) { return m1 + m2; };
 
-    auto mat4_subtraction_overloads = sol::overload( []( const glm::mat4& m1, const glm::mat4& m2 ) { return m1 - m2; } );
+    auto mat4_subtraction_overloads = []( const glm::mat4& m1, const glm::mat4& m2 ) { return m1 - m2; };
 
     auto mat4_to_string = []( const glm::mat4& m )
     {
@@ -263,6 +321,8 @@ void CreateMat4Bind( sol::state& lua )
 		mat4_addition_overloads,
 		sol::meta_function::subtraction,
 		mat4_subtraction_overloads,
+        sol::meta_function::index,
+        []( glm::mat4& m, int i ) -> glm::vec4& { return m[i]; },
 		sol::meta_function::to_string,
 		mat4_to_string
     );
@@ -354,8 +414,22 @@ int main( int, char* [] )
 	{
         lua.safe_script( R"(
 			test_vec = vec2(1,1)
+			io.write( test_vec[0] , "\n" )
+
 			test_mat2 = identity_mat2()
-			io.write( tostring(test_mat2 * test_vec) )
+			io.write( tostring( test_mat2 ), "\n" )
+			test_mat2[1][1] = 3
+			io.write( tostring( test_mat2 ) , "\n\n" )
+
+			test_mat3 = identity_mat3()
+			io.write( tostring( test_mat3 ), "\n" )
+			test_mat3[1][1] = 3
+			io.write( tostring( test_mat3 ) , "\n\n" )
+
+			test_mat4 = identity_mat4()
+			io.write( tostring( test_mat4 ), "\n" )
+			test_mat4[1][1] = 3
+			io.write( tostring( test_mat4 ) , "\n" )
 		)" );
 	}
     catch ( std::exception& e )
