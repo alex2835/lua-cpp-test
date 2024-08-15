@@ -414,15 +414,18 @@ int main( int, char* [] )
 	{
 	    lua.safe_script( R"(
 			test_vec = vec2(1,1)
-			io.write( test_vec[0] , "\n" 
+			io.write( test_vec[0] , "\n\n" )
+
 			test_mat2 = identity_mat2()
 			io.write( tostring( test_mat2 ), "\n" )
 			test_mat2[1][1] = 3
-			io.write( tostring( test_mat2 ) , "\n\n" 
+			io.write( tostring( test_mat2 ) , "\n\n" )
+			
 			test_mat3 = identity_mat3()
 			io.write( tostring( test_mat3 ), "\n" )
 			test_mat3[1][1] = 3
-			io.write( tostring( test_mat3 ) , "\n\n" 
+			io.write( tostring( test_mat3 ) , "\n\n" )
+			
 			test_mat4 = identity_mat4()
 			io.write( tostring( test_mat4 ), "\n" )
 			test_mat4[1][1] = 3
