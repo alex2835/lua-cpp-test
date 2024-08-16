@@ -328,9 +328,7 @@ void CreateMat4Bind( sol::state& lua )
     );
 }
 
-/*
- * Some helper math functions
- */
+
 void MathFreeFunctions( sol::state& lua )
 {
     lua.set_function( "identity_mat2", glm::identity<glm::mat2> );
